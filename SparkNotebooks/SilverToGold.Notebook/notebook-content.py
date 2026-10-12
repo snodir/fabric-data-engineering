@@ -1,10 +1,24 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "synapse_pyspark"
+# META   }
+# META }
 
 # CELL ********************
 
 import findspark
 findspark.init()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -14,11 +28,25 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import to_date, col, lit
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 spark = SparkSession.builder \
     .appName("SilverToGold Transformation") \
     .getOrCreate()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -47,6 +75,13 @@ data = [
     ("Widget A", 1008, "2025-01-02", "Zeta Group", 4,  54.29, "Widget Alpha")
 ]
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # --- 3. Create the DataFrame ---
@@ -69,6 +104,13 @@ df_silver.write.format("delta") \
     .option("overwriteSchema", "true") \
     .saveAsTable("small_silver_sales")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
@@ -79,6 +121,13 @@ df_silver.write.format("delta") \
 # MAGIC     total_quantity DOUBLE,
 # MAGIC     average_price  DOUBLE
 # MAGIC ) USING DELTA;
+
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -95,6 +144,13 @@ df_silver.write.format("delta") \
 # MAGIC         Product,
 # MAGIC         DATE_TRUNC('month', Date);
 
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
@@ -105,6 +161,13 @@ df_silver.write.format("delta") \
 # MAGIC 
 # MAGIC SELECT *
 # MAGIC FROM gold_monthly_sales_summary;
+
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -118,14 +181,28 @@ df_silver.write.format("delta") \
 # MAGIC 
 # MAGIC DESCRIBE gold_monthly_sales_summary_partitioned;
 
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
 # MAGIC SELECT
 # MAGIC     Product,
-# MAGIC     SUM(net_sales) AS product_sales
+# MAGIC     SUM(net_sales) AS productwise_sales_amount
 # MAGIC FROM gold_monthly_sales_summary
 # MAGIC WHERE sales_month >= '2025-01-01'
 # MAGIC   AND sales_month <= '2025-03-31'
 # MAGIC GROUP BY Product
 # MAGIC ORDER BY product_sales DESC;
+
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark"
+# META }
