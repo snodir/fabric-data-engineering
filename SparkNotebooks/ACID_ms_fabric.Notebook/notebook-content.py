@@ -118,6 +118,12 @@ display(history_df)
 # MAGIC -- Clean slate for ledger
 # MAGIC DELETE FROM ledger;
 
+# METADATA ********************
+
+# META {
+# META   "language": "sql"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
@@ -131,6 +137,12 @@ display(history_df)
 # MAGIC ON t.account_id = s.account_id
 # MAGIC WHEN MATCHED THEN UPDATE SET t.balance = t.balance + s.delta;
 
+# METADATA ********************
+
+# META {
+# META   "language": "sql"
+# META }
+
 # CELL ********************
 
 # MAGIC %%sql
@@ -140,3 +152,9 @@ display(history_df)
 # MAGIC -- (Here we re-check current pair)
 # MAGIC SELECT SUM(CASE WHEN account_id IN (1001,2002) THEN balance END)
 # MAGIC FROM accounts; -- not strictly zero; instead, check two-row delta sum if you logged pre-state
+
+# METADATA ********************
+
+# META {
+# META   "language": "sql"
+# META }
